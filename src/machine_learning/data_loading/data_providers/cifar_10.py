@@ -14,8 +14,8 @@ class CIFAR10_DataProvider(DataProvider):
         path_str = str(self.datasets_path + '/cifar-10-batches-py')
         download = not os.path.exists(path_str)
 
-        mean = [0.4914, 0.4822, 0.4465]
-        std = [0.2470, 0.2435, 0.2616]
+        mean = [0.5] * 3
+        std = [0.25] * 3
         train_transform = transforms.Compose([
             transforms.AutoAugment(transforms.AutoAugmentPolicy.CIFAR10),
             transforms.ToTensor(),
