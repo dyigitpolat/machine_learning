@@ -2,6 +2,7 @@ from machine_learning.data_loading.data_loader_factory import DataLoaderFactory
 from machine_learning.data_loading.data_providers.cifar_10 import CIFAR10_DataProvider
 from machine_learning.training.basic_trainer import BasicTrainer
 from machine_learning.loss_functions.basic_classification_loss import BasicClassificationLoss
+from machine_learning.reporting.wandb_reporter import WandB_Reporter
 
 import torch
 import torch.nn as nn
@@ -17,9 +18,10 @@ def main():
 
     trainer = BasicTrainer(
         model, device, training_loader, validation_loader, test_loader, 
-        BasicClassificationLoss())
+        BasicClassificationLoss(),
+        WandB_Reporter("cifar10", "vgg19_bn").report)
     
-    trainer.train_n_epochs(0.0001, 10)
+    # trainer.train_n_epochs(0.0001, 2)
     print("Test accuracy: {}".format(trainer.test()))
 
 def init():
@@ -30,9 +32,9 @@ def init():
     return device
 
 def get_model():
-    cifar10_vgg19 = torch.hub.load('chenyaofo/pytorch-cifar-models', 'cifar10_vgg19_bn', pretrained=True)
+    cifar10_vgg19 = torch.hub.load('chenyaofo/pytorch-cifar-models', 'cifar10_vgg19_bn', pretrained=True, trust_repo=True)
     print(cifar10_vgg19)
-    
+
     return cifar10_vgg19
 
 def get_data_loaders(training_batch_size, validation_batch_size, test_batch_size):

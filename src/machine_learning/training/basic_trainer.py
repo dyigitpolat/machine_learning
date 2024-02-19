@@ -22,7 +22,7 @@ class AccuracyTracker:
 
 class BasicTrainer:
     def __init__(
-            self, model, device, train_loader, validation_loader, test_loader, loss_function):
+            self, model, device, train_loader, validation_loader, test_loader, loss_function, report_function = None):
         self.model = model.to(device)
         self.device = device
 
@@ -30,7 +30,7 @@ class BasicTrainer:
         self.validation_loader = validation_loader
         self.test_loader = test_loader
         
-        self.report_function = None
+        self.report_function = report_function
         self.loss_function = loss_function
 
         self.val_iter = iter(self.validation_loader)
