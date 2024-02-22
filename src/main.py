@@ -8,7 +8,6 @@ import torch
 import torch.nn as nn
 
 def main():
-    device = init()
     model = get_model()
 
     training_loader, validation_loader, test_loader = get_data_loaders(
@@ -17,19 +16,12 @@ def main():
         test_batch_size=128)
 
     trainer = BasicTrainer(
-        model, device, training_loader, validation_loader, test_loader, 
+        model, torch.device("cuda"), training_loader, validation_loader, test_loader, 
         BasicClassificationLoss(),
         WandB_Reporter("cifar10", "vgg19_bn").report)
     
     # trainer.train_n_epochs(0.0001, 2)
     print("Test accuracy: {}".format(trainer.test()))
-
-def init():
-    assert torch.cuda.is_available(), "CUDA is not available"
-    device = torch.device("cuda")
-    print("CUDA device name: {}".format(torch.cuda.get_device_name(device)))
-
-    return device
 
 def get_model():
     cifar10_vgg19 = torch.hub.load('chenyaofo/pytorch-cifar-models', 'cifar10_vgg19_bn', pretrained=True, trust_repo=True)
