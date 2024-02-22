@@ -42,9 +42,8 @@ class BasicTrainer:
 
     def _get_optimizer_and_scheduler(self, lr):
         optimizer = torch.optim.Adam(self.model.parameters(), lr = lr)
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            optimizer, 
-            mode='min', patience=5, factor=0.9, min_lr=lr/100, verbose=True)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            optimizer, T_0 = 5, T_mult = 2, eta_min = 1e-6)
 
         return optimizer, scheduler
 
